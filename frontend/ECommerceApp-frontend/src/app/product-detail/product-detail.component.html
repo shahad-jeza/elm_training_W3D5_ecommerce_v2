@@ -1,12 +1,27 @@
-<div *ngIf="product; else loadingOrError">
-  <h2>{{ product.name }}</h2>
-  <p>{{ product.description }}</p>
-  <p>{{ product.price | currency }}</p>
-  <img [src]="product.imageUrl" class="card-img-top" alt="{{ product.name }}">
-  <button (click)="addToCart(product)">Add to Cart</button>
+<div class="container mt-4">
+  <div *ngIf="product; else loadingOrError" class="card shadow">
+    <div class="row g-0">
+      <div class="col-md-6">
+        <img [src]="product.imageUrl" class="img-fluid rounded-start" alt="{{ product.name }}">
+      </div>
+      <div class="col-md-6">
+        <div class="card-body">
+          <h2 class="card-title">{{ product.name }}</h2>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Price:</strong> {{ product.price | currency }}</p>
+          <button (click)="addToCart(product)" class="btn btn-success">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #loadingOrError>
+    <div *ngIf="errorMessage; else loading" class="alert alert-danger mt-4">{{ errorMessage }}</div>
+    <ng-template #loading>
+      <div class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
 </div>
-
-<ng-template #loadingOrError>
-  <p *ngIf="errorMessage; else loading">{{ errorMessage }}</p>
-  <ng-template #loading>Loading product details...</ng-template>
-</ng-template>
