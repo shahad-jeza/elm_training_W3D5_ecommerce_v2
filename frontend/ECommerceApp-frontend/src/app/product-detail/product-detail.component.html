@@ -1,0 +1,12 @@
+<div *ngIf="product; else loadingOrError">
+  <h2>{{ product.name }}</h2>
+  <p>{{ product.description }}</p>
+  <!-- Uncomment if price and imageUrl are available -->
+  <!-- <p>{{ product.price | currency }}</p>
+  <img [src]="product.imageUrl" alt="{{ product.name }}"> -->
+</div>
+
+<ng-template #loadingOrError>
+  <p *ngIf="errorMessage; else loading">{{ errorMessage }}</p>
+  <ng-template #loading>Loading product details...</ng-template>
+</ng-template>
