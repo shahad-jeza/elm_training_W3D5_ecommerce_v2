@@ -14,9 +14,12 @@ export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService) {}
 
+  errorMessage: string = '';
+
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(data => {
-      this.products = data;
+    this.productService.getProducts().subscribe({
+      next: data => this.products = data,
+      error: error => this.errorMessage = 'Failed to load products'
     });
   }
 }
