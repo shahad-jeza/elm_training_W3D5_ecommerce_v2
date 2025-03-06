@@ -4,6 +4,7 @@
 
   <p>{{ product.price | currency }}</p>
   <img [src]="product.imageUrl" alt="{{ product.name }}"> 
+  <button (click)="addToCart(product)">Add to Cart</button>
 </div>
 
 <ng-template #loadingOrError>
