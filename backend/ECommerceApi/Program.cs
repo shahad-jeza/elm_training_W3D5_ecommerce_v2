@@ -25,6 +25,18 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Serve static files from the "Images" folder
+var imagesPath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesPath),
+    RequestPath = "/Images"
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -34,6 +46,8 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECommerce API v1");
     });
 }
+
+
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngularApp");
@@ -50,15 +64,16 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Images"
 });
 
+var baseUrl = $"{Request.Scheme}://{Request.Host}";
 // Sample product data
 var products = new List<Product>
 {
-new Product { Id = 1, Name = "Laptop", Description = "High-performance laptop", Price = 999.99M, ImageUrl = "/Images/laptop.jpg" },
-new Product { Id = 2, Name = "Phone", Description = "Latest smartphone", Price = 699.99M, ImageUrl = "/Images/phone.jpg" },
-new Product { Id = 3, Name = "Tablet", Description = "Lightweight and powerful tablet", Price = 499.99M, ImageUrl = "/Images/tablet.jpg" },
-new Product { Id = 4, Name = "Smartwatch", Description = "Feature-packed smartwatch", Price = 299.99M, ImageUrl = "/Images/smartwatch.jpg" },
-new Product { Id = 5, Name = "Headphones", Description = "Noise-canceling over-ear headphones", Price = 199.99M, ImageUrl = "/Images/headphones.jpg" },
-new Product { Id = 6, Name = "Gaming Console", Description = "Next-gen gaming console", Price = 399.99M, ImageUrl = "/Images/console.jpg" }
+new Product { Id = 1, Name = "Laptop", Description = "High-performance laptop", Price = 999.99M, ImageUrl =$"{baseUrl}/Images/laptop.jpg"},
+new Product { Id = 2, Name = "Phone", Description = "Latest smartphone", Price = 699.99M, ImageUrl = $"{baseUrl}/Images/phone.jpg" },
+new Product { Id = 3, Name = "Tablet", Description = "Lightweight and powerful tablet", Price = 499.99M, ImageUrl = $"{baseUrl}/Images/tablet.jpg" },
+new Product { Id = 4, Name = "Smartwatch", Description = "Feature-packed smartwatch", Price = 299.99M, ImageUrl = $"{baseUrl}/Images/smartwatch.jpg" },
+new Product { Id = 5, Name = "Headphones", Description = "Noise-canceling over-ear headphones", Price = 199.99M, ImageUrl = $"{baseUrl}/Images/headphones.jpg" },
+new Product { Id = 6, Name = "Gaming Console", Description = "Next-gen gaming console", Price = 399.99M, ImageUrl = $"{baseUrl}/Images/console.jpg" }
 };
 
 // Endpoint to get all products
