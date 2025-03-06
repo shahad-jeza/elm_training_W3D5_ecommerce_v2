@@ -1,6 +1,6 @@
 <div *ngFor="let product of products">
   <h3>{{ product.name }}</h3>
   <p>Price: ${{ product.price }}</p>
-  <button >View Details</button>
+  <button [routerLink]="['/product', product.id]">View Details</button>
   <div *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

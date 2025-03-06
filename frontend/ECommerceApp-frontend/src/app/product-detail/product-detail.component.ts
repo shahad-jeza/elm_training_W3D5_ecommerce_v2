@@ -13,37 +13,25 @@ import { CartService } from '../services/cart.service';
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | undefined;
-  errorMessage: string | undefined; // Add an error message property
+  errorMessage: string | undefined;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService // Inject CartService
   ) {}
-
 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id')!;
-    console.log('Fetching product with ID:', id); // Debug log
-  
     this.productService.getProductById(id).subscribe({
-      next: (data) => {
-        console.log('Product data received:', data); // Debug log
-        this.product = data;
-        console.log('Product object after assignment:', this.product); // Debug log
-      },
-      error: (err) => {
-        console.error('Error fetching product:', err); // Debug log
-        this.errorMessage = 'Failed to load product details. Please try again later.';
-      }
+      next: (data) => this.product = data,
+      error: (err) => this.errorMessage = 'Failed to load product details.'
     });
-
-    console.log('ProductDetailComponent initialized!');
-
   }
+
+  // Add the current product to the cart
   addToCart(product: Product): void {
     this.cartService.addToCart(product);
     alert('Product added to cart!');
   }
-  }
-
+}
